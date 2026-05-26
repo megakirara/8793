@@ -3,10 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌸鼻くそわっしょい：爆速・宝石💩🌸</title>
+<title>🌸鼻くそわっしょい🌸</title>
 <style>
   html,body{margin:0;padding:0;overflow:hidden;height:100%;background:linear-gradient(270deg,#1a1a2e,#162447,#1f4068,#1b1b2f,#0f0f1f);background-size:1200% 1200%;animation:g 40s ease infinite}
   @keyframes g{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+  #back-link {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 3000;
+    background: rgba(255, 255, 255, 0.7);
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Courier New', monospace, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background 0.2s;
+  }
+  #back-link:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 1);
+  }
 
   .snow{position:absolute;pointer-events:none;font-size:22px;animation:snowfall linear forwards;color: white; text-shadow: 0 0 10px #fff;}
   @keyframes snowfall{
@@ -21,15 +43,13 @@
     will-change: transform; pointer-events: auto;
   }
 
-  /* 💩本体：フィルターを使わず、後ろの光を透かせる */
   .poop-inner {
     font-size: 24px; position: relative; z-index: 2; cursor: pointer;
   }
 
-  /* 💩の後ろで輝く宝石の光：こいつが色をつける */
   .poop-light {
     position: absolute; width: 20px; height: 20px; border-radius: 50%;
-    filter: blur(8px); /* ぼかしは静止画として処理されるので軽い */
+    filter: blur(8px);
     z-index: 1; opacity: 0.8;
   }
 
@@ -38,14 +58,15 @@
 </head>
 <body>
 
+<a href="https://megakirara.github.io/-KINOKO/" id="back-link">( 👁️ _ 👁️ )戻る❓</a>
+
 <script>
 const poops = [];
 const jewelColors = ["#ff99cc", "#99ffff", "#cc99ff", "#99ffcc", "#ffff99", "#ffcc99"];
 let mouseX = 0, mouseY = 0;
 let isMouseActive = false;
 
-// 💩生成：コンテナ方式で軽量化
-for(let i=0; i<250; i++){ // 少し数を絞ってさらに快適に
+for(let i=0; i<250; i++){ 
   const container = document.createElement('div');
   container.className = 'poop-container';
   
@@ -105,7 +126,6 @@ function animate(){
       if(p.x < 0 || p.x > window.innerWidth) p.vx *= -1;
       if(p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
     }
-    // transformを使うことでCPUではなくGPUに仕事を投げる
     p.el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
   });
   requestAnimationFrame(animate);
@@ -113,6 +133,8 @@ function animate(){
 animate();
 
 document.addEventListener('click', e => {
+  if (e.target.id === 'back-link') return;
+
   let hit = false;
   poops.forEach(p => {
     const dx = e.clientX - p.x;
@@ -123,7 +145,7 @@ document.addEventListener('click', e => {
   if(hit){
     const f = document.createElement('div');
     f.className='face';
-    f.innerText = Math.random() < 0.1 ? 'バカが押すぅ〜( ´_ゝ｀)' : '( ´,_ゝ｀)ﾌﾟｯ';
+    f.innerText = Math.random() < 0.1 ? '( 👁️ _ 👁️ )' : '（ 👁️_ゝ👁️）✨';
     f.style.left = e.clientX + 'px';
     f.style.top = e.clientY + 'px';
     document.body.appendChild(f);
