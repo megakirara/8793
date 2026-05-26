@@ -1,246 +1,157 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-    <title>🌸真・ステルス計算機🌸</title>
-    <style>
-        /* ---- Animations ---- */
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes cloudDrift { from { transform: translate(-10%, 0); } to { transform: translate(10%, 0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸鼻くそわっしょい🌸</title>
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;height:100%;background:linear-gradient(270deg,#1a1a2e,#162447,#1f4068,#1b1b2f,#0f0f1f);background-size:1200% 1200%;animation:g 40s ease infinite}
+  @keyframes g{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background: #fff5f8; }
-        body { font-family: "Hiragino Maru Gothic ProN", "Yu Gothic UI", sans-serif; -webkit-user-select: none; touch-action: pan-y; }
+  #back-link {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 3000;
+    background: rgba(255, 255, 255, 0.7);
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Courier New', monospace, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background 0.2s;
+  }
+  #back-link:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 1);
+  }
 
-        #bg-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
-            background: linear-gradient(-45deg, #ffcde8, #d2f4ff, #ffe0ec, #e9d5ff);
-            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
-        }
+  .snow{position:absolute;pointer-events:none;font-size:22px;animation:snowfall linear forwards;color: white; text-shadow: 0 0 10px #fff;}
+  @keyframes snowfall{
+    0%{transform:translateY(-100px) translateX(0) rotate(0deg);opacity:0}
+    10%{opacity:0.85}
+    100%{transform:translateY(calc(100vh + 100px)) translateX(var(--swing)) rotate(360deg);opacity:0}
+  }
 
-        .cloud {
-            position: absolute; border-radius: 50%; z-index: 1;
-            background: rgba(255, 255, 255, 0.85);
-            filter: blur(45px); animation: cloudDrift 25s infinite alternate ease-in-out;
-        }
+  .poop-container {
+    position:absolute; width: 30px; height: 30px; 
+    display: flex; align-items: center; justify-content: center;
+    will-change: transform; pointer-events: auto;
+  }
 
-        #header-wrapper {
-            position: relative; z-index: 100; padding: 10px 5px;
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px);
-            border-bottom: 3px dotted #ffb7d1; text-align: center;
-        }
-        
-        .header-link {
-            text-decoration: none;
-            display: inline-block;
-        }
-        h1 {
-            font-size: 1.1rem; margin: 0; color: #ff3399;
-            text-shadow: 0 0 15px rgba(255,255,255,1), 2px 2px 0 #fff;
-            letter-spacing: 1px; line-height: 1.4;
-            transition: transform 0.2s;
-        }
-        .header-link:hover h1 {
-            transform: scale(1.02);
-            text-shadow: 0 0 20px rgba(255,255,255,1), 2px 2px 0 #ff66cc;
-        }
+  .poop-inner {
+    font-size: 24px; position: relative; z-index: 2; cursor: pointer;
+  }
 
-        #calc-ui {
-            position: fixed; top: 80px; right: 10px; z-index: 200;
-            background: rgba(255, 255, 255, 0.95); padding: 10px; border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3); 
-            width: min(220px, calc(100vw - 20px)); border: 2px solid #ffcfe5;
-        }
-        #calc-display {
-            width: 100%; height: 45px; background: #fff; border: 1px solid #ffcfe5; margin-bottom: 8px;
-            text-align: right; padding: 8px; box-sizing: border-box; font-size: 22px; color: #ff3399; 
-            border-radius: 8px; font-weight: bold; outline: none;
-        }
-        .calc-row {
-            display: flex; gap: 4px; margin-bottom: 4px;
-        }
-        .calc-btn {
-            flex: 1; height: 50px; border: none; background: #fff0f6;
-            color: #ff66aa; border-radius: 10px; cursor: pointer; font-weight: bold; 
-            transition: 0.2s; font-size: 18px; touch-action: manipulation;
-        }
-        .calc-btn:active { background: #ff66aa; color: white; transform: scale(0.95); }
+  .poop-light {
+    position: absolute; width: 20px; height: 20px; border-radius: 50%;
+    filter: blur(8px);
+    z-index: 1; opacity: 0.8;
+  }
 
-        #mycelium { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; pointer-events: none; }
-
-        .mushroom-wrapper {
-            position: absolute; width: 90px; height: 130px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 15; cursor: pointer; pointer-events: auto;
-            transition: transform 2.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s;
-            will-change: transform, opacity;
-        }
-        .mushroom-inner { animation: float 5s infinite ease-in-out; }
-
-        .mushroom {
-            width: 85px; height: 115px;
-            background: radial-gradient(ellipse at top,#ffffff 0%,#ffccff 25%,#ff99cc 60%,#ff6699 100%);
-            border-radius: 70% 70% 55% 55% / 80% 80% 50% 50%;
-            display:flex; align-items:center; justify-content:center;
-            font-size:11px; color:#fff; font-weight:800; text-align:center;
-            padding: 8px; box-sizing: border-box; position: relative;
-            box-shadow: 0 0 35px #ff99cc, inset 0 0 25px #fff, 0 0 60px rgba(255,105,180,0.4);
-            text-shadow: 0 0 8px #ff3399;
-        }
-        .mushroom::before { content: '🌸'; position: absolute; top: -25px; font-size: 28px; text-shadow: 0 0 15px #ff66cc; }
-        .mushroom::after {
-            content:''; position:absolute; bottom:-25px; left:50%; transform:translateX(-50%);
-            width:18px; height:40px; background:linear-gradient(to bottom,#ff99cc,#ff6699);
-            border-radius:10px; box-shadow:0 0 20px #ff66cc;
-        }
-
-        .heart { position:absolute; font-size:20px; pointer-events:none; z-index:250; }
-
-        @media (max-width: 480px) {
-            h1 { font-size: 0.95rem; }
-            #calc-ui { top: 70px; }
-            .mushroom { font-size: 10px; width: 80px; height: 110px; }
-        }
-    </style>
+  .face{position:absolute;font-size:45px;color:#fff;text-shadow:0 0 12px #000;pointer-events:none;z-index:100;}
+</style>
 </head>
 <body>
-    <div id="bg-container">
-        <div class="cloud" style="width:500px; height:250px; top:8%; left:-5%;"></div>
-        <div class="cloud" style="width:400px; height:200px; top:65%; left:60%;"></div>
-        <div class="cloud" style="width:300px; height:180px; top:35%; left:20%; background: rgba(255,255,255,0.5);"></div>
-    </div>
-    
-    <div id="header-wrapper">
-        <a href="https://megakirara.github.io/-KINOKO/baiyo.html" class="header-link">
-            <h1>🌸ステルス卓上計算機へようこそ。<br>任意のつくしに触れてXに投稿しよう。🌸</h1>
-        </a>
-    </div>
 
-    <div id="calc-ui">
-        <input type="text" id="calc-display" readonly value="0">
-        <div class="calc-row">
-            <button class="calc-btn" onclick="addChar('7')">7</button>
-            <button class="calc-btn" onclick="addChar('8')">8</button>
-            <button class="calc-btn" onclick="addChar('9')">9</button>
-            <button class="calc-btn" onclick="addChar('/')">÷</button>
-        </div>
-        <div class="calc-row">
-            <button class="calc-btn" onclick="addChar('4')">4</button>
-            <button class="calc-btn" onclick="addChar('5')">5</button>
-            <button class="calc-btn" onclick="addChar('6')">6</button>
-            <button class="calc-btn" onclick="addChar('*')">×</button>
-        </div>
-        <div class="calc-row">
-            <button class="calc-btn" onclick="addChar('1')">1</button>
-            <button class="calc-btn" onclick="addChar('2')">2</button>
-            <button class="calc-btn" onclick="addChar('3')">3</button>
-            <button class="calc-btn" onclick="addChar('-')">-</button>
-        </div>
-        <div class="calc-row">
-            <button class="calc-btn" onclick="addChar('0')">0</button>
-            <button class="calc-btn" onclick="resetCalc()">C</button>
-            <button class="calc-btn" onclick="execCalc()">=</button>
-            <button class="calc-btn" onclick="addChar('+')">+</button>
-        </div>
-    </div>
+<a href="https://megakirara.github.io/-KINOKO/baiyo.html" id="back-link">( 👁️ _ 👁️ )戻る❓</a>
 
-    <div id="mycelium"></div>
+<script>
+const poops = [];
+const jewelColors = ["#ff99cc", "#99ffff", "#cc99ff", "#99ffcc", "#ffff99", "#ffcc99"];
+let mouseX = 0, mouseY = 0;
+let isMouseActive = false;
 
-    <script>
-        const container = document.getElementById('mycelium');
-        const display = document.getElementById('calc-display');
-        const concepts = ["カントのきゅん脳死命法💗","ニーチェのドキドキ回帰💗","脳死者の列ベクトル💗","ラプラスの脳死悪魔💗","ゲーデルのふわふわ定理💗","ピタゴラスのハート定理💗","オイラーのラブ公式💕","シュレディンガーのきゅん💕","脳死のきゅん적帰納法💕","ピタゴラスの脳死定理💕","脳味噌お花畑の証明💕","1Åの単純な脳細胞💗","ふわふわ脳死革命💕","ラブリー・ラジアン・コンプレックス💕","πの末尾で会いましょう💕","フェルマーの死せる脳細胞💕","あなたと量子レベルでもつれたい💕","エントロピー増大で脳死💕","フェルマーの最終脳死💕","リーマン予想と見せかけて恋💕",];
+for(let i=0; i<250; i++){ 
+  const container = document.createElement('div');
+  container.className = 'poop-container';
+  
+  const light = document.createElement('div');
+  light.className = 'poop-light';
+  light.style.backgroundColor = jewelColors[Math.floor(Math.random() * jewelColors.length)];
+  
+  const inner = document.createElement('div');
+  inner.className = 'poop-inner';
+  inner.innerText = '💩';
 
-        window.addChar = (char) => {
-            if(display.value === "0" || display.value === "IQ200") display.value = char;
-            else display.value += char;
-        };
-        window.resetCalc = () => { display.value = "0"; };
-        window.execCalc = () => {
-            if(display.value === '111') {
-                for(let i=0; i<30; i++) setTimeout(() => growMushroom(true), i * 65);
-            }
-            display.value = "IQ200";
-        };
+  container.appendChild(light);
+  container.appendChild(inner);
+  
+  const p = {
+    el: container,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: Math.random() * 1.4 - 0.7,
+    vy: Math.random() * 1.4 - 0.7
+  };
+  
+  document.body.appendChild(container);
+  poops.push(p);
+}
 
-        function createHeart(x, y, emoji = '💗') {
-            const h = document.createElement('div');
-            h.className = 'heart'; h.innerText = emoji;
-            h.style.left = x + 'px'; h.style.top = y + 'px';
-            document.body.appendChild(h);
-            h.animate([
-                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                { transform: `translate(${(Math.random()-0.5)*300}px, -350px) scale(0)`, opacity: 0 }
-            ], { duration: 2200, easing: 'ease-out' }).onfinish = () => h.remove();
-        }
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  isMouseActive = true;
+  clearTimeout(window.mouseTimer);
+  window.mouseTimer = setTimeout(()=> isMouseActive = false, 1000);
+});
 
-        function growMushroom(isBurst = false) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'mushroom-wrapper';
-            const x = Math.max(5, Math.min(85, Math.random() * 80 + 10));
-            const y = Math.max(20, Math.min(60, Math.random() * 50 + 20));
-            
-            wrapper.style.left = x + '%';
-            wrapper.style.bottom = '-180px';
-            wrapper.style.opacity = '0';
+function snow(){
+  for(let i=0; i<4; i++){
+    const s = document.createElement('div');
+    s.className='snow';
+    s.innerText = ['❄','❅','❆','✴','✿'][Math.floor(Math.random()*5)];
+    s.style.left = Math.random() * window.innerWidth + 'px';
+    const dur = Math.random() * 8 + 10;
+    s.style.animationDuration = dur +'s';
+    s.style.setProperty('--swing', (Math.random() * 200 - 100) + 'px');
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), dur * 1000);
+  }
+}
+setInterval(snow, 800);
 
-            const inner = document.createElement('div');
-            inner.className = 'mushroom-inner';
-            const mush = document.createElement('div');
-            mush.className = 'mushroom';
-            const concept = concepts[Math.floor(Math.random() * concepts.length)];
-            mush.innerText = concept;
+function animate(){
+  poops.forEach(p => {
+    if(isMouseActive){
+      p.x += (mouseX - p.x) * 0.04;
+      p.y += (mouseY - p.y) * 0.04;
+    } else {
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0 || p.x > window.innerWidth) p.vx *= -1;
+      if(p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
+    }
+    p.el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
 
-            inner.appendChild(mush);
-            wrapper.appendChild(inner);
-            container.appendChild(wrapper);
+document.addEventListener('click', e => {
+  if (e.target.id === 'back-link') return;
 
-            requestAnimationFrame(() => {
-                wrapper.style.transform = `translateY(-${y + 20}vh)`;
-                wrapper.style.opacity = '1';
-            });
+  let hit = false;
+  poops.forEach(p => {
+    const dx = e.clientX - p.x;
+    const dy = e.clientY - p.y;
+    if(dx*dx + dy*dy < 4000) hit = true;
+  });
 
-            let touchHandled = false;
-            
-            const handleTouch = (e) => {
-                if (touchHandled) return;
-                touchHandled = true;
-                const pos = e.touches ? e.touches[0] : e;
-                for(let i=0; i<11; i++) createHeart(pos.clientX, pos.clientY, '💕');
-                setTimeout(() => touchHandled = false, 300);
-            };
-            
-            wrapper.addEventListener('touchstart', handleTouch, {passive: true});
-            wrapper.addEventListener('mouseenter', (e) => {
-                if (!('ontouchstart' in window)) handleTouch(e);
-            });
-
-            wrapper.onclick = (e) => {
-                e.preventDefault();
-                const pos = e.touches ? e.touches[0] : e;
-                for(let i=0; i<15; i++) createHeart(pos.clientX || e.clientX, pos.clientY || e.clientY, '💗');
-                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('💕'+concept+' #脳死ごみばこ')}`, '_blank');
-                wrapper.style.transform += ' scale(0) rotate(540deg)';
-                setTimeout(() => wrapper.remove(), 800);
-            };
-
-            setTimeout(() => {
-                if(wrapper.parentNode) {
-                    wrapper.style.opacity = '0';
-                    wrapper.style.transform += ' translateY(-150px)';
-                    setTimeout(() => wrapper.remove(), 2500);
-                }
-            }, isBurst ? 12000 : 18000);
-        }
-
-        setInterval(() => {
-            const existingCount = document.querySelectorAll('.mushroom-wrapper').length;
-            const maxMushrooms = window.innerWidth < 480 ? 8 : 12;
-            if(existingCount < maxMushrooms) growMushroom();
-        }, 3000);
-
-        growMushroom();
-    </script>
+  if(hit){
+    const f = document.createElement('div');
+    f.className='face';
+    f.innerText = Math.random() < 0.1 ? '( 👁️ _ 👁️ )' : '（ 👁️_ゝ👁️）✨';
+    f.style.left = e.clientX + 'px';
+    f.style.top = e.clientY + 'px';
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 800);
+  }
+});
+</script>
 </body>
 </html>
